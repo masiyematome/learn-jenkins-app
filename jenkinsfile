@@ -2,16 +2,7 @@ pipeline {
     agent any
 
     stages {
-        stage('first-stage') {
-            steps {
-                sh '''
-                    echo "Running from the first stage"
-                    touch first-stage-doc.txt
-                '''
-            }
-        }
-
-        stage('second-stage') {
+        stage('build') {
             agent{
                 docker{
                     image 'node:18-alpine'
@@ -20,10 +11,15 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "Running from the first stage"
-                    touch second-stage-doc.txt
+                    ls -la
+                    node --version
+                    npm --version
+                    run ci
+                    run npm build
+                    ls -la
                 '''
             }
         }
+
     }
 }
